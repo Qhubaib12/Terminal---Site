@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qhubaib Shaikh - Terminal Intro</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.2rem;
+      padding: 2rem;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .terminal {
+      white-space: pre-wrap;
+      overflow: hidden;
+      border-left: 2px solid #00ff00;
+      padding-left: 1rem;
+      word-wrap: break-word;
+    }
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #00ff00;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { background-color: transparent; }
+    }
+    .ascii-art {
+      margin-top: 2rem;
+      color: #0f0;
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+    #commandInput {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #0f0;
+      font-family: inherit;
+      font-size: 1.2rem;
+      outline: none;
+      padding-top: 1rem;
+      autocomplete: off;
+    }
+    #skipBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1rem;
+      z-index: 10;
+    }
+    #skipBtn:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+        font-size: 1rem;
+      }
+      .ascii-art {
+        font-size: 0.75rem;
+      }
+      #skipBtn {
+        top: 10px;
+        right: 10px;
+        padding: 4px 8px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="skipBtn">Skip</button>
+  <div class="terminal" id="terminal"></div>
+  <input id="commandInput" placeholder="> Type a command (e.g., help)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+  <div class="ascii-art" id="ascii"></div>
+
+  <audio id="typeSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+  <script>
+    const preText = `> Establishing secure connection...\n> Accessing classified intel...\n> Scanning digital vaults...\n> Fetching Agent Cube's data profile...\n\n`;
+
+    const mainText = `> Name: Qhubaib Shaikh\n> Location: Mumbai, India\n> Email: qhubaibshaikh56@gmail.com\n> LinkedIn: linkedin.com/in/qhubaib\n> GitHub: github.com/Qhubaib12\n
+> Title: Website Enforcement Specialist
+
+> Skills Tree:
+  ├── Digital Risk & Threat Intelligence
+  ├── Data Analysis & Visualization
+  ├── Brand Protection
+  ├── Cybersecurity & Online Fraud Detection
+  ├── Programming & Scripting
+  ├── Web Scraping & Automation
+  ├── Data Quality Assessment & Improvement
+  ├── Cybercrime Investigation & Intelligence Sharing
+  └── Dark Web & Deep Web Monitoring
+
+> Tech Stack Tree:
+  ├── Programming Languages:
+  │   ├── Python
+  │   ├── SQL
+  │   ├── Java
+  │   └── JavaScript
+  ├── BI & Analytics:
+  │   ├── Power BI
+  │   ├── Tableau
+  │   ├── Google Analytics
+  │   └── Looker
+  ├── Tools & Platforms:
+  │   ├── Microsoft Excel
+  │   ├── MySQL
+  │   ├── Git & GitHub
+  │   └── JIRA
+  ├── Cyber Tools:
+  │   ├── WHOIS Lookup
+  │   ├── Wireshark
+  │   ├── Kali Linux
+  │   └── Burp Suite
+  └── Productivity:
+      └── Notion
+
+> Executing Command: work_experience.log
+>> Corsearch (2023 - Present)
+   -> Role: Website Enforcement Specialist
+   -> Responsibilities:
+      ✓ Anti-phishing & brand protection
+      ✓ Automating takedown procedures
+      ✓ Investigating cyber fraud and threats
+      ✓ Monitoring DNS abuse and web scraping ops
+
+> Executing Command: clients.list
+>> Protected Brands:
+   -> Microsoft
+   -> Marshall
+   -> Logitech
+   -> Nike
+   -> [ + more ]
+
+> Executing Command: internships.scan
+>> Found 4 Entries:
+   ✓ SAP — Cybersecurity Engineering Intern
+   ✓ Clifford Chance — Cyber Security Global
+   ✓ Clifford Chance — Antitrust Global
+   ✓ KPMG — Data Analytics Consulting
+
+> Executing Command: projects.list
+>> Personal Projects:
+   ✓ Eye of Providence — AI Criminal ID System for Mumbai Police
+   ✓ Price Tracker Tool — Python + Web Scraping
+   ✓ AI-based E-Commerce Platform
+   ✓ Group Chat App — Java + NoSQL
+
+> Executing Command: certifications.list
+>> Verified Credentials:
+   ✓ EC-Council — Certified Cyber Threat Intelligence
+   ✓ Infosys, AIG, Mastercard — Virtual Internships
+   ✓ WIPO — IP Rights Certified
+
+> Executing Command: hobbies.fetch
+>> Hobbies:
+   ✓ Gaming
+   ✓ Workout
+   ✓ Writing Novels
+   ✓ Watching Movies & Anime
+
+> Status: Online
+
+> Access Granted.
+> Welcome, Agent.`;
+
+    const ascii = `
+   _____       _           _     _     _     
+  |  __ \\     | |         | |   (_)   | |    
+  | |__) |   _| |__   ___ | |__  _  __| |___ 
+  |  ___/ | | | '_ \\ / _ \\| '_ \\| |/ _\` / __|
+  | |   | |_| | |_) | (_) | |_) | | (_| \\__ \\
+  |_|    \\__,_|_.__/ \\___/|_.__/|_|\\__,_|___/
+`;
+
+    const terminal = document.getElementById('terminal');
+    const asciiEl = document.getElementById('ascii');
+    const sound = document.getElementById('typeSound');
+    const commandInput = document.getElementById('commandInput');
+    const skipBtn = document.getElementById('skipBtn');
+
+    let typing = true;
+
+    function typeLines(lines, callback) {
+      let i = 0;
+      function typeNext() {
+        if (!typing || i >= lines.length) return callback();
+        typeOutputLine(lines[i], () => {
+          i++;
+          typeNext();
+        });
+      }
+      typeNext();
+    }
+
+    function typeOutputLine(content, callback) {
+      let j = 0;
+      const line = document.createElement('div');
+      terminal.appendChild(line);
+      function typeChar() {
+        if (j < content.length) {
+          line.textContent = content.slice(0, j++) + '_';
+          sound.currentTime = 0;
+          sound.play();
+          setTimeout(typeChar, 25);
+        } else {
+          line.textContent = content;
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    }
+
+    function startTypingSequence() {
+      const initLines = preText.trim().split('\n');
+      typeLines(initLines, () => {
+        typeOutputLine('', () => {
+          let i = 0;
+          function typeRest() {
+            if (!typing || i >= mainText.length) {
+              terminal.innerHTML += '<span class="cursor"></span>';
+              asciiEl.textContent = ascii;
+              return;
+            }
+            terminal.innerHTML += mainText.charAt(i++);
+            sound.currentTime = 0;
+            sound.play();
+            setTimeout(typeRest, 30);
+          }
+          typeRest();
+        });
+      });
+    }
+
+    startTypingSequence();
+
+    commandInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const cmd = commandInput.value.trim().toLowerCase();
+        commandInput.value = '';
+        typeOutputLine('> ' + cmd, () => handleCommand(cmd));
+      }
+    });
+
+    skipBtn.addEventListener('click', () => {
+      typing = false;
+      terminal.innerHTML = preText + mainText + '<span class="cursor"></span>';
+      asciiEl.textContent = ascii;
+    });
+
+    function handleCommand(cmd) {
+      const responses = {
+        help: '> Available commands: help, projects, status, clear, resume, skip, sudo, matrix, nuke, redmode',
+        projects: '> Eye of Providence, Price Tracker Tool, AI E-Commerce Platform, Group Chat App',
+        status: '> Agent Cube is online and monitoring threats.',
+        download: '> Resume Download: Click here',
+        sudo: '> Permission denied. You are not root.',
+        matrix: '> Activating Matrix mode... Just kidding 😉',
+        nuke: '> Launching in 3... 2... 1... 💥 Just joking! Stay calm, Agent.'
+      };
+
+      if (cmd === 'clear') {
+        terminal.innerHTML = '';
+        return;
+      } else if (cmd === 'skip') {
+        typing = false;
+        terminal.innerHTML = preText + mainText + '<span class="cursor"></span>';
+        asciiEl.textContent = ascii;
+        return;
+      } else if (cmd === 'resume') {
+        typeOutputLine('> Resume Download: ', () => {
+          const a = document.createElement('a');
+          a.href = 'Qhubaib Resume (1).pdf';
+          a.textContent = 'Click here';
+          a.style.color = '#0f0';
+          a.download = '';
+          terminal.appendChild(a);
+        });
+      } else if (cmd === 'redmode') {
+        document.body.style.backgroundColor = '#000';
+        document.body.style.color = '#ff0000';
+        document.querySelector('.terminal').style.borderLeft = '2px solid #ff0000';
+        document.getElementById('commandInput').style.color = '#ff0000';
+        document.getElementById('skipBtn').style.color = '#ff0000';
+        document.getElementById('skipBtn').style.borderColor = '#ff0000';
+        typeOutputLine('> Red mode activated. 🔴');
+      } else {
+        const output = responses[cmd] || '> Unknown command. Type "help" for a list of commands.';
+        typeOutputLine(output);
+      }
+    }
+  </script>
+</body>
+</html>
