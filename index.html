@@ -196,6 +196,7 @@
 
     let hackStage = 0;
     let selectedPlatform = '';
+    let passwordMode = false;
     const platforms = ['instagram', 'facebook', 'x', 'linkedin'];
 
     function typeOutputLine(content, callback) {
@@ -269,7 +270,7 @@
         if (timeLeft > 0) {
           setTimeout(update, 150);
         } else {
-          line.textContent = `> ✅ ${platform} password cracked successfully!`;
+          line.textContent = `>  ${platform} password cracked successfully!`;
         }
       }
 
@@ -278,10 +279,10 @@
 
     function handleCommand(cmd) {
       const input = cmd.trim().toLowerCase();
-      const inputBox = document.getElementById('commandInput');
-      inputBox.removeAttribute('type');
 
-      if (hackStage === 1) {
+      if (passwordMode) {
+        passwordMode = false;
+        commandInput.setAttribute('type', 'text');
         if (input === 'rootcube') {
           typeOutputLine('> Access Granted ', () => {
             typeOutputLine('> Choose platform (instagram/facebook/x/linkedin):');
@@ -291,6 +292,13 @@
           typeOutputLine('> Access Denied , Incorrect Password.');
           hackStage = 0;
         }
+        return;
+      }
+
+      if (hackStage === 1) {
+        typeOutputLine('> Enter Admin Password:');
+        passwordMode = true;
+        commandInput.setAttribute('type', 'password');
         return;
       }
 
@@ -314,7 +322,6 @@
 
       if (input === 'hack') {
         typeOutputLine('> Accessing secure admin zone...');
-        typeOutputLine('> Enter Admin Password:');
         hackStage = 1;
         return;
       }
@@ -362,7 +369,8 @@
       if (e.key === 'Enter') {
         const cmd = commandInput.value.trim();
         commandInput.value = '';
-        typeOutputLine('> ' + cmd, () => handleCommand(cmd));
+        if (!passwordMode) typeOutputLine('> ' + cmd, () => handleCommand(cmd));
+        else handleCommand(cmd); // Don't echo password
       }
     });
 
