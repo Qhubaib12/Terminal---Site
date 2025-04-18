@@ -265,7 +265,7 @@
         let timeLeft = crackTime * 3600 - elapsed;
         let hrs = Math.floor(timeLeft / 3600);
         let mins = Math.floor((timeLeft % 3600) / 60);
-        line.textContent = `> [${fake}]  ⏳ Estimated crack time: ${hrs}h ${mins}m`;
+        line.textContent = `> [${fake}]  Estimated crack time: ${hrs}h ${mins}m`;
         if (timeLeft > 0) {
           setTimeout(update, 150);
         } else {
