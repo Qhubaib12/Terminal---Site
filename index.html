@@ -11,7 +11,6 @@
       font-family: 'Courier New', Courier, monospace;
       font-size: 1.2rem;
       padding: 2rem;
-      position: relative;
       box-sizing: border-box;
     }
     .terminal {
@@ -45,7 +44,6 @@
       font-size: 1.2rem;
       outline: none;
       padding-top: 1rem;
-      autocomplete: off;
     }
     #skipBtn {
       position: fixed;
@@ -65,7 +63,6 @@
       background-color: #0f0;
       color: #000;
     }
-
     @media (max-width: 768px) {
       body {
         padding: 1rem;
@@ -90,11 +87,12 @@
   <div class="ascii-art" id="ascii"></div>
 
   <audio id="typeSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+
   <script>
     const preText = `> Establishing secure connection...\n> Accessing classified intel...\n> Scanning digital vaults...\n> Fetching Agent Cube's data profile...\n\n`;
 
-    const mainText = `> Name: Qhubaib Shaikh\n> Last known location: Mumbai, India\n> Email: qhubaibshaikh56@gmail.com\n> LinkedIn: linkedin.com/in/qhubaib\n> GitHub: github.com/Qhubaib12\n
-> Title: Enforcement Specialist
+    const mainText = `> Name: Qhubaib Shaikh\n> Location: Mumbai, India\n> Email: qhubaibshaikh56@gmail.com\n> LinkedIn: linkedin.com/in/qhubaib\n> GitHub: github.com/Qhubaib12\n
+> Title: Website Enforcement Specialist
 
 > Skills Tree:
   ├── Digital Risk & Threat Intelligence
@@ -194,20 +192,11 @@
     const sound = document.getElementById('typeSound');
     const commandInput = document.getElementById('commandInput');
     const skipBtn = document.getElementById('skipBtn');
-
     let typing = true;
 
-    function typeLines(lines, callback) {
-      let i = 0;
-      function typeNext() {
-        if (!typing || i >= lines.length) return callback();
-        typeOutputLine(lines[i], () => {
-          i++;
-          typeNext();
-        });
-      }
-      typeNext();
-    }
+    let hackStage = 0;
+    let selectedPlatform = '';
+    const platforms = ['instagram', 'facebook', 'x', 'linkedin'];
 
     function typeOutputLine(content, callback) {
       let j = 0;
@@ -225,6 +214,18 @@
         }
       }
       typeChar();
+    }
+
+    function typeLines(lines, callback) {
+      let i = 0;
+      function typeNext() {
+        if (!typing || i >= lines.length) return callback();
+        typeOutputLine(lines[i], () => {
+          i++;
+          typeNext();
+        });
+      }
+      typeNext();
     }
 
     function startTypingSequence() {
@@ -248,11 +249,118 @@
       });
     }
 
-    startTypingSequence();
+    function simulateBruteforce(platform) {
+      let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let start = Date.now();
+      let crackTime = Math.floor(Math.random() * 3 + 3);
+      const line = document.createElement('div');
+      document.getElementById('terminal').appendChild(line);
+
+      function update() {
+        let fake = '';
+        for (let i = 0; i < 25; i++) {
+          fake += charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+        let elapsed = Math.floor((Date.now() - start) / 1000);
+        let timeLeft = crackTime * 3600 - elapsed;
+        let hrs = Math.floor(timeLeft / 3600);
+        let mins = Math.floor((timeLeft % 3600) / 60);
+        line.textContent = `> [${fake}]  ⏳ Estimated crack time: ${hrs}h ${mins}m`;
+        if (timeLeft > 0) {
+          setTimeout(update, 150);
+        } else {
+          line.textContent = `> ✅ ${platform} password cracked successfully!`;
+        }
+      }
+
+      update();
+    }
+
+    function handleCommand(cmd) {
+      const input = cmd.trim().toLowerCase();
+      const inputBox = document.getElementById('commandInput');
+      inputBox.removeAttribute('type');
+
+      if (hackStage === 1) {
+        if (input === 'rootcube') {
+          typeOutputLine('> Access Granted ', () => {
+            typeOutputLine('> Choose platform (instagram/facebook/x/linkedin):');
+            hackStage = 2;
+          });
+        } else {
+          typeOutputLine('> Access Denied , Incorrect Password.');
+          hackStage = 0;
+        }
+        return;
+      }
+
+      if (hackStage === 2) {
+        if (platforms.includes(input)) {
+          selectedPlatform = input;
+          typeOutputLine(`> You selected ${input}. Enter username or email to proceed:`);
+          hackStage = 3;
+        } else {
+          typeOutputLine('> Unknown platform. Try again.');
+        }
+        return;
+      }
+
+      if (hackStage === 3) {
+        typeOutputLine(`> Username/Email accepted. Initiating bruteforce on ${selectedPlatform}...`);
+        simulateBruteforce(selectedPlatform);
+        hackStage = 4;
+        return;
+      }
+
+      if (input === 'hack') {
+        typeOutputLine('> Accessing secure admin zone...');
+        typeOutputLine('> Enter Admin Password:');
+        hackStage = 1;
+        return;
+      }
+
+      const responses = {
+        help: '> Available commands: help, projects, status, clear, resume, skip, sudo, matrix, nuke, redmode',
+        projects: '> Eye of Providence, Price Tracker Tool, AI E-Commerce Platform, Group Chat App',
+        status: '> Agent Cube is online and monitoring threats.',
+        download: '> Resume Download: Click here',
+        sudo: '> Permission denied. You are not root.',
+        matrix: '> Activating Matrix mode... Just kidding 😉',
+        nuke: '> Launching in 3... 2... 1... 💥 Just joking! Stay calm, Agent.',
+      };
+
+      if (input === 'clear') {
+        terminal.innerHTML = '';
+      } else if (input === 'skip') {
+        typing = false;
+        terminal.innerHTML = preText + mainText + '<span class="cursor"></span>';
+        asciiEl.textContent = ascii;
+      } else if (input === 'resume') {
+        typeOutputLine('> Resume Download: ', () => {
+          const a = document.createElement('a');
+          a.href = 'Qhubaib Resume.pdf';
+          a.textContent = 'Click here';
+          a.style.color = '#0f0';
+          a.download = '';
+          terminal.appendChild(a);
+        });
+      } else if (input === 'redmode') {
+        document.body.style.backgroundColor = '#000';
+        document.body.style.color = '#ff0000';
+        document.querySelector('.terminal').style.borderLeft = '2px solid #ff0000';
+        document.getElementById('commandInput').style.color = '#ff0000';
+        document.getElementById('skipBtn').style.color = '#ff0000';
+        document.getElementById('skipBtn').style.borderColor = '#ff0000';
+        typeOutputLine('> Red mode activated. 🔴');
+      } else {
+        const output = responses[input] || '> Unknown command. Type "help" for a list of commands.';
+        typeOutputLine(output);
+      }
+    }
 
     commandInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
-        const cmd = commandInput.value.trim().toLowerCase();
+        const cmd = commandInput.value.trim();
         commandInput.value = '';
         typeOutputLine('> ' + cmd, () => handleCommand(cmd));
       }
@@ -264,47 +372,7 @@
       asciiEl.textContent = ascii;
     });
 
-    function handleCommand(cmd) {
-      const responses = {
-        help: '> Available commands: help, projects, status, clear, resume, skip, sudo, matrix, nuke, redmode',
-        projects: '> Eye of Providence, Price Tracker Tool, AI E-Commerce Platform, Group Chat App',
-        status: '> Agent Cube is online and monitoring threats.',
-        download: '> Resume Download: Click here',
-        sudo: '> Permission denied. You are not root.',
-        matrix: '> Activating Matrix mode... Just kidding 😉',
-        nuke: '> Launching in 3... 2... 1... 💥 Just joking! Stay calm, Agent.'
-      };
-
-      if (cmd === 'clear') {
-        terminal.innerHTML = '';
-        return;
-      } else if (cmd === 'skip') {
-        typing = false;
-        terminal.innerHTML = preText + mainText + '<span class="cursor"></span>';
-        asciiEl.textContent = ascii;
-        return;
-      } else if (cmd === 'resume') {
-        typeOutputLine('> Resume Download: ', () => {
-          const a = document.createElement('a');
-          a.href = 'Qhubaib Resume.pdf';
-          a.textContent = 'Click here';
-          a.style.color = '#0f0';
-          a.download = '';
-          terminal.appendChild(a);
-        });
-      } else if (cmd === 'redmode') {
-        document.body.style.backgroundColor = '#000';
-        document.body.style.color = '#ff0000';
-        document.querySelector('.terminal').style.borderLeft = '2px solid #ff0000';
-        document.getElementById('commandInput').style.color = '#ff0000';
-        document.getElementById('skipBtn').style.color = '#ff0000';
-        document.getElementById('skipBtn').style.borderColor = '#ff0000';
-        typeOutputLine('> Red mode activated. 🔴');
-      } else {
-        const output = responses[cmd] || '> Unknown command. Type "help" for a list of commands.';
-        typeOutputLine(output);
-      }
-    }
+    startTypingSequence();
   </script>
 </body>
 </html>
