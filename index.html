@@ -325,6 +325,77 @@
         hackStage = 1;
         return;
       }
+      if (input === 'darknet') {
+        const darknetLogs = [
+  '[.onion] Login credentials dump – 45K accounts – $10 BTC',
+  '[.onion] Remote Access Tools for hire – starting at $50',
+  '[.onion] Zero-day exploit for sale (Windows 11) – $5000',
+  '[.onion] Fullz: Credit card + SSN bundles – 100 records',
+  '[.onion] HITMAN Service (Worldwide) – Starting $5k',
+  '[.onion] DarkLeaks – Politician email archive 7.2GB',
+  '[.onion] DeepBay – Weapons auction ends in 6h 12m',
+  '[.onion] Malware-as-a-Service dashboard detected',
+  '[.onion] Marketplace escrow dispute – awaiting resolution...',
+  '[.onion] RedRoom — access denied. Requires Level 9 clearance.',
+  '[.onion] ExploitDB Premium – 0day archive (2022–2025)',
+  '[.onion] Spoofed passport generator – Realistic templates (EU/US/UK)',
+  '[.onion] Bank logins w/ balance > $10K – Sold in batches',
+  '[.onion] RAT Builder Pro – FUD + crypter bundle – $150',
+  '[.onion] Classified NATO document cache – 14.3GB – Encrypted',
+  '[.onion] Government surveillance tool leaked – "OwlEye Suite"',
+  '[.onion] Crypto mixer logs leaked – deanonymization possible',
+  '[.onion] Rent-a-botnet – 20k nodes available (Geo-targeted)',
+  '[.onion] Ethereum wallet brute-forcing tool – 30% success rate',
+  '[.onion] OnionMail dump – 200k private mailboxes',
+  '[.onion] Facial recognition bypass tool (Active Directory)',
+  '[.onion] Deep fake identity builder – facial + audio clone',
+  '[.onion] Credit card skimmers w/ NFC – $90 per unit',
+  '[.onion] Police database access – limited slots left!',
+  '[.onion] Fake COVID-19 vaccination certificates – $30 each',
+  '[.onion] 3D printed firearm blueprints (auto fire mod included)',
+  '[.onion] TOR-to-Clearnet proxy – traceable bypass tool',
+  '[.onion] Secret agent ID generator – MI6 / FSB / NSA styles',
+  '[.onion] Interpol Watchlist clone site – spoofed entries',
+  '[.onion] Black Hat forums: Hacked cam live feeds (NSFW)',
+  '[.onion] Leaked chat logs from FBI Discord honeypot',
+  '[.onion] "Hydra Market" v3 mirror – fresh invite codes',
+  '[.onion] Unlisted domain marketplace – buy & sell .gov sites',
+  '[.onion] SIM swapper tool – v2.5.1 patched for AT&T/T-Mobile',
+  '[.onion] Underground eBay for stolen luxury watches',
+  '[.onion] Nuclear plant schematics archive (Ukraine 2023)',
+  '[.onion] Custom ransomware builder – Drag & Drop edition',
+  '[.onion] Firmware exploit for Tesla Autopilot override',
+  '[.onion] Keylogger logs archive – 2TB compressed (2024)',
+  '[.onion] Covert USB drop payloads – Office / Windows ready',
+  '[.onion] Blackmail contract template generator – markdown ready',
+  '[.onion] Crypto drain script v5.6 – stealth-mode enabled',
+  '[.onion] iCloud unlock remote API – Access token required',
+  '[.onion] ChatGPT jailbreak prompts collection (dangerous!)',
+  '[.onion] Leaked drone feed viewer – military grade only',
+  '[.onion] "Project Aurora" exposed – AI-led surveillance blueprint',
+  '[.onion] National firewall bypass VPN list – North Korea edition',
+  '[.onion] Ultra stealth burner phone service – ships worldwide',
+  '[.onion] SQLi scanner API – returns credentials in JSON'
+];
+
+
+  const selectedLogs = darknetLogs
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 5); // show 5 random entries
+
+  typeOutputLine('> Connecting to darknet nodes via Tor...', () => {
+    setTimeout(() => {
+      typeOutputLine('> Tunnel established.  Accessing .onion services...');
+      selectedLogs.forEach((log, i) => {
+        setTimeout(() => typeOutputLine(`> 🕸 ${log}`), 600 * (i + 1));
+      });
+      setTimeout(() => {
+        typeOutputLine('> Darknet scan complete. Results stored in temp memory.');
+      }, 600 * (selectedLogs.length + 1));
+    }, 1000);
+  });
+  return;
+}
 
       const responses = {
         help: '> Available commands: help, projects, status, clear, resume, skip, sudo, matrix, nuke, redmode',
