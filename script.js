@@ -313,8 +313,8 @@
         status: '> Agent Cube is online and monitoring threats.',
         download: '> Resume Download: Click here',
         sudo: '> Permission denied. You are not root.',
-        matrix: '> Activating Matrix mode... Just kidding 😉',
-        nuke: '> Launching in 3... 2... 1... 💥 Just joking! Stay calm, Agent.',
+        matrix: '> Activating Matrix mode... Permission denied please contact admin',
+        nuke: '> Launching in 3... 2... 1... IP Address not in our record , Access Denied, Agent.',
       };
 
       if (input === 'clear') {
