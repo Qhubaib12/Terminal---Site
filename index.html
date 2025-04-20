@@ -3,92 +3,765 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qhubaib - Terminal Intro</title>
-<body oncontextmenu="return false;">
+  <title>Qhubaib Shaikh - Terminal Intro</title>
   <style>
-    body {
-      background-color: #000;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 1.1rem;
-      padding: 2rem;
-      box-sizing: border-box;
+    :root {
+      --primary-color: #0f0;
+      --background-color: #000;
+      --terminal-bg: rgba(16, 16, 16, 0.8);
+      --glow-effect: 0 0 5px var(--primary-color);
+      --font-main: 'Courier New', Courier, monospace;
     }
+    
+    body {
+      background-color: var(--background-color);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="black"/><g fill="%230f0" opacity="0.05"><rect x="0" y="0" width="50" height="50"/><rect x="50" y="50" width="50" height="50"/></g></svg>');
+      color: var(--primary-color);
+      font-family: var(--font-main);
+      font-size: 1rem;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1000px;
+      width: 90%;
+      margin: 2rem auto;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--primary-color);
+      border-radius: 4px;
+      box-shadow: var(--glow-effect);
+      background-color: var(--terminal-bg);
+    }
+    
+    .header-title {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .status-dot {
+      height: 10px;
+      width: 10px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    .terminal-container {
+      flex-grow: 1;
+      border: 1px solid var(--primary-color);
+      border-radius: 4px;
+      padding: 1.5rem;
+      box-shadow: var(--glow-effect);
+      overflow-y: auto;
+      background-color: var(--terminal-bg);
+      position: relative;
+    }
+    
     .terminal {
       white-space: pre-wrap;
       overflow: hidden;
-      border-left: 2px solid #00ff00;
-      padding-left: 1rem;
       word-wrap: break-word;
+      margin-bottom: 1rem;
+      position: relative;
     }
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background-color: #00ff00;
-      animation: blink 1s step-end infinite;
+    
+    .terminal-line {
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
     }
-    @keyframes blink {
-      50% { background-color: transparent; }
+    
+    .input-container {
+      display: flex;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      border: 1px solid var(--primary-color);
+      border-radius: 4px;
+      background-color: var(--terminal-bg);
+      box-shadow: var(--glow-effect);
     }
-    .ascii-art {
-      margin-top: 2rem;
-      color: #0f0;
-      font-size: 0.9rem;
-      word-break: break-word;
+    
+    .prompt {
+      margin-right: 0.5rem;
+      font-weight: bold;
     }
+    
     #commandInput {
       width: 100%;
       background: transparent;
       border: none;
-      color: #0f0;
+      color: var(--primary-color);
       font-family: inherit;
-      font-size: 1.1rem;
-      outline: none;
-      padding-top: 1rem;
-    }
-    #skipBtn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #111;
-      color: #0f0;
-      border: 1px solid #0f0;
-      border-radius: 4px;
-      padding: 6px 12px;
-      cursor: pointer;
-      font-family: 'Courier New', Courier, monospace;
       font-size: 1rem;
+      outline: none;
+    }
+    
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background-color: var(--primary-color);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+    
+    .ascii-art {
+      font-size: 0.9rem;
+      word-break: break-word;
+      text-align: center;
+      margin: 1.5rem 0;
+      line-height: 1.2;
+    }
+    
+    #skipBtn, .action-btn {
+      background-color: var(--terminal-bg);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    
+    #skipBtn:hover, .action-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--background-color);
+      box-shadow: var(--glow-effect);
+    }
+    
+    .tree-structure {
+      margin-left: 1rem;
+    }
+    
+    .command-highlight {
+      color: #ff8800;
+      font-weight: bold;
+    }
+    
+    @keyframes blink {
+      50% { background-color: transparent; }
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
       z-index: 10;
     }
-    #skipBtn:hover {
-      background-color: #0f0;
-      color: #000;
+    
+    .scan-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: rgba(0, 255, 0, 0.2);
+      box-shadow: 0 0 15px 0 rgba(0, 255, 0, 0.5);
+      animation: scanline 6s linear infinite;
+      z-index: 11;
+      pointer-events: none;
     }
+    
+    @keyframes scanline {
+      0% { top: -5px; }
+      100% { top: 100%; }
+    }
+    
+    /* Red mode styles */
+    body.red-mode {
+      --primary-color: #ff0000;
+    }
+    
+    /* Command response styling */
+    .response-success {
+      color: #00ff00;
+    }
+    
+    .response-error {
+      color: #ff0000;
+    }
+    
+    .response-warning {
+      color: #ffcc00;
+    }
+    
+    /* Skills and tech styling */
+    .skill-item, .tech-item {
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .skill-item:before, .tech-item:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 1rem;
+      height: 1px;
+      background-color: var(--primary-color);
+    }
+    
+    /* Command history dropdown */
+    .command-history {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 5;
+    }
+    
+    .history-dropdown {
+      background-color: var(--terminal-bg);
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 0.3rem 0.5rem;
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    
+    /* Footer with social links */
+    .footer {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .social-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+      text-shadow: var(--glow-effect);
+    }
+    
+    /* Media queries */
     @media (max-width: 768px) {
-      body {
+      .container {
+        width: 95%;
+        margin: 1rem auto;
+      }
+      
+      .terminal-container {
         padding: 1rem;
-        font-size: 1rem;
       }
+      
       .ascii-art {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
       }
-      #skipBtn {
-        top: 10px;
-        right: 10px;
-        padding: 4px 8px;
-        font-size: 0.85rem;
+      
+      #skipBtn, .action-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+      
+      .header-title {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
-<body>
-  <button id="skipBtn">Skip</button>
-  <div class="terminal" id="terminal"></div>
-  <input id="commandInput" placeholder="> Type a command (e.g. resume, help)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-  <div class="ascii-art" id="ascii"></div>
+<body oncontextmenu="return false;">
+  <div class="overlay"></div>
+  <div class="scan-line"></div>
+  
+  <div class="container">
+    <div class="header">
+      <div class="header-title">SECURED TERMINAL ACCESS</div>
+      <div class="header-status">
+        <span class="status-text">CONNECTED</span>
+        <span class="status-dot"></span>
+      </div>
+    </div>
+    
+    <div class="terminal-container">
+      <button id="skipBtn">Skip Intro</button>
+      <div class="command-history">
+        <select class="history-dropdown" id="historyDropdown">
+          <option value="">Command History</option>
+        </select>
+      </div>
+      <div class="terminal" id="terminal"></div>
+    </div>
+    
+    <div class="input-container">
+      <span class="prompt">&gt;</span>
+      <input id="commandInput" placeholder="Type a command (e.g. resume, help)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </div>
+    
+    <div class="ascii-art" id="ascii"></div>
+    
+    <div class="footer">
+      <div class="social-links">
+        <a href="https://github.com/Qhubaib12" target="_blank" class="social-link">GitHub</a>
+        <a href="https://linkedin.com/in/qhubaib" target="_blank" class="social-link">LinkedIn</a>
+        <a href="mailto:qhubaibshaikh56@gmail.com" class="social-link">Email</a>
+      </div>
+    </div>
+  </div>
 
   <audio id="typeSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
 
-  <script src="script.js"></script>
+  <script>
+    const preText = `> Establishing secure connection...\n> Accessing classified intel...\n> Scanning digital vaults...\n> Fetching Agent Cube's data profile...\n\n`;
+
+    const mainText = `> Name: Qhubaib Shaikh\n> Last Known Location: Mumbai, India\n> Email: qhubaibshaikh56@gmail.com\n> LinkedIn: linkedin.com/in/qhubaib\n> GitHub: github.com/Qhubaib12\n
+> Title: Website Enforcement Specialist
+
+> Skills Tree:
+├── Digital Risk & Threat Intelligence
+├── Data Analysis & Visualization
+├── Brand Protection
+├── Cybersecurity & Online Fraud Detection
+├── Programming & Scripting
+├── Web Scraping & Automation
+├── Data Quality Assessment & Improvement
+├── Cybercrime Investigation & Intelligence Sharing
+└── Dark Web & Deep Web Monitoring
+
+> Tech Stack Tree:
+├── Programming Languages:
+│   ├── Python
+│   ├── SQL
+│   ├── Java
+│   └── JavaScript
+├── BI & Analytics:
+│   ├── Power BI
+│   ├── Tableau
+│   ├── Google Analytics
+│   └── Looker
+├── Tools & Platforms:
+│   ├── Microsoft Excel
+│   ├── MySQL
+│   ├── Git & GitHub
+│   └── JIRA
+├── Cyber Tools:
+│   ├── WHOIS Lookup
+│   ├── Wireshark
+│   ├── Kali Linux
+│   └── Burp Suite
+└── Productivity:
+  └── Notion
+
+> Executing Command: work_experience.log
+>> Corsearch (2023 - Present)
+-> Role: Website Enforcement Specialist
+-> Responsibilities:
+  ✓ Anti-phishing & brand protection
+  ✓ Automating takedown procedures
+  ✓ Investigating cyber fraud and threats
+  ✓ Monitoring DNS abuse and web scraping ops
+
+> Executing Command: clients.list
+>> Protected Brands:
+-> Microsoft
+-> Marshall
+-> Logitech
+-> Nike
+-> [ + more ]
+
+> Executing Command: internships.scan
+>> Found 4 Entries:
+✓ SAP — Cybersecurity Engineering Intern
+✓ Clifford Chance — Cyber Security Global
+✓ Clifford Chance — Antitrust Global
+✓ KPMG — Data Analytics Consulting
+
+> Executing Command: projects.list
+>> Personal Projects:
+✓ Eye of Providence — AI Criminal ID System for Mumbai Police
+✓ Price Tracker Tool — Python + Web Scraping
+✓ AI-based E-Commerce Platform
+✓ Group Chat App — Java + NoSQL
+
+> Executing Command: certifications.list
+>> Verified Credentials:
+✓ EC-Council — Certified Cyber Threat Intelligence
+✓ Infosys, AIG, Mastercard — Virtual Internships
+✓ WIPO — IP Rights Certified
+
+> Executing Command: hobbies.fetch
+>> Hobbies:
+✓ Gaming
+✓ Workout
+✓ Writing Novels
+✓ Watching Movies & Anime
+
+> Status: Online
+
+> Access Granted.
+> Welcome, Agent.`;
+
+    const ascii = `
+_____       _           _     _     _     
+|  __ \\     | |         | |   (_)   | |    
+| |__) |   _| |__   ___ | |__  _  __| |___ 
+|  ___/ | | | '_ \\ / _ \\| '_ \\| |/ _\` / __|
+| |   | |_| | |_) | (_) | |_) | | (_| \\__ \\
+|_|    \\__,_|_.__/ \\___/|_.__/|_|\\__,_|___/
+`;
+
+    const terminal = document.getElementById('terminal');
+    const asciiEl = document.getElementById('ascii');
+    const sound = document.getElementById('typeSound');
+    const commandInput = document.getElementById('commandInput');
+    const skipBtn = document.getElementById('skipBtn');
+    const historyDropdown = document.getElementById('historyDropdown');
+    let typing = true;
+    let commandHistory = [];
+
+    let hackStage = 0;
+    let selectedPlatform = '';
+    let passwordMode = false;
+    const platforms = ['instagram', 'facebook', 'x', 'linkedin'];
+
+    function addToHistory(cmd) {
+      if (cmd && !commandHistory.includes(cmd)) {
+        commandHistory.push(cmd);
+        const option = document.createElement('option');
+        option.value = cmd;
+        option.textContent = cmd;
+        historyDropdown.appendChild(option);
+      }
+    }
+
+    historyDropdown.addEventListener('change', function() {
+      if (this.value) {
+        commandInput.value = this.value;
+        commandInput.focus();
+        this.selectedIndex = 0;
+      }
+    });
+
+    function typeOutputLine(content, callback) {
+      let j = 0;
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      terminal.appendChild(line);
+      
+      function typeChar() {
+        if (j < content.length) {
+          line.textContent = content.slice(0, j++) + '_';
+          if (j % 3 === 0) { // Reduce sound frequency
+            sound.volume = 0.2;
+            sound.currentTime = 0;
+            sound.play();
+          }
+          setTimeout(typeChar, 25);
+        } else {
+          line.textContent = content;
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    }
+
+    function typeLines(lines, callback) {
+      let i = 0;
+      function typeNext() {
+        if (!typing || i >= lines.length) return callback();
+        typeOutputLine(lines[i], () => {
+          i++;
+          typeNext();
+        });
+      }
+      typeNext();
+    }
+
+    function startTypingSequence() {
+      const initLines = preText.trim().split('\n');
+      typeLines(initLines, () => {
+        typeOutputLine('', () => {
+          let i = 0;
+          function typeRest() {
+            if (!typing || i >= mainText.length) {
+              terminal.innerHTML += '<span class="cursor"></span>';
+              asciiEl.innerHTML = ascii;
+              return;
+            }
+            terminal.innerHTML += mainText.charAt(i++);
+            if (i % 5 === 0) { // Reduce sound frequency
+              sound.volume = 0.1;
+              sound.currentTime = 0;
+              sound.play();
+            }
+            setTimeout(typeRest, 30);
+          }
+          typeRest();
+        });
+      });
+    }
+
+    function simulateBruteforce(platform) {
+      let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+[]{}|;:,.<>?';
+      let start = Date.now();
+      let crackTime = Math.floor(Math.random() * 3 + 3);
+      const line = document.createElement('div');
+      line.className = 'terminal-line response-warning';
+      terminal.appendChild(line);
+
+      function update() {
+        let fake = '';
+        for (let i = 0; i < 25; i++) {
+          fake += charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+        let elapsed = Math.floor((Date.now() - start) / 1000);
+        let timeLeft = crackTime * 3600 - elapsed;
+        let hrs = Math.floor(timeLeft / 3600);
+        let mins = Math.floor((timeLeft % 3600) / 60);
+        line.textContent = `> [${fake}]  Estimated crack time: ${hrs}h ${mins}m`;
+        if (timeLeft > 0) {
+          setTimeout(update, 150);
+        } else {
+          line.textContent = `> ${platform} password cracked successfully!`;
+          line.className = 'terminal-line response-success';
+        }
+      }
+
+      update();
+    }
+
+    function handleCommand(cmd) {
+      const input = cmd.trim().toLowerCase();
+      
+      if (input) addToHistory(input);
+
+      if (passwordMode) {
+        passwordMode = false;
+        commandInput.setAttribute('type', 'text');
+        if (input === 'rootcube') {
+          typeOutputLine('> Access Granted ', () => {
+            typeOutputLine('> Choose platform (instagram/facebook/x/linkedin):');
+            hackStage = 2;
+          });
+        } else {
+          const errorLine = document.createElement('div');
+          errorLine.className = 'terminal-line response-error';
+          errorLine.textContent = '> Access Denied, Incorrect Password.';
+          terminal.appendChild(errorLine);
+          hackStage = 0;
+        }
+        return;
+      }
+
+      if (hackStage === 1) {
+        typeOutputLine('> Enter Admin Password:');
+        passwordMode = true;
+        commandInput.setAttribute('type', 'password');
+        return;
+      }
+
+      if (hackStage === 2) {
+        if (platforms.includes(input)) {
+          selectedPlatform = input;
+          typeOutputLine(`> You selected ${input}. Enter username or email to proceed:`);
+          hackStage = 3;
+        } else {
+          const errorLine = document.createElement('div');
+          errorLine.className = 'terminal-line response-error';
+          errorLine.textContent = '> Unknown platform. Try again.';
+          terminal.appendChild(errorLine);
+        }
+        return;
+      }
+
+      if (hackStage === 3) {
+        typeOutputLine(`> Username/Email accepted. Initiating bruteforce on ${selectedPlatform}...`);
+        simulateBruteforce(selectedPlatform);
+        hackStage = 4;
+        return;
+      }
+
+      if (input === 'hack') {
+        typeOutputLine('> Accessing secure admin zone... Enter Username');
+        hackStage = 1;
+        return;
+      }
+      
+      if (input === 'darknet') {
+        const darknetLogs = [
+          '[.onion] Login credentials dump – 45K accounts – $10 BTC',
+          '[.onion] Remote Access Tools for hire – starting at $50',
+          '[.onion] Zero-day exploit for sale (Windows 11) – $5000',
+          '[.onion] Fullz: Credit card + SSN bundles – 100 records',
+          '[.onion] HITMAN Service (Worldwide) – Starting $5k',
+          '[.onion] DarkLeaks – Politician email archive 7.2GB',
+          '[.onion] DeepBay – Weapons auction ends in 6h 12m',
+          '[.onion] Malware-as-a-Service dashboard detected',
+          '[.onion] Marketplace escrow dispute – awaiting resolution...',
+          '[.onion] RedRoom — access denied. Requires Level 9 clearance.',
+          '[.onion] ExploitDB Premium – 0day archive (2022–2025)',
+          '[.onion] Spoofed passport generator – Realistic templates (EU/US/UK)',
+          '[.onion] Bank logins w/ balance > $10K – Sold in batches',
+          '[.onion] RAT Builder Pro – FUD + crypter bundle – $150',
+          '[.onion] Classified NATO document cache – 14.3GB – Encrypted',
+          '[.onion] Government surveillance tool leaked – "OwlEye Suite"',
+          '[.onion] Crypto mixer logs leaked – deanonymization possible',
+          '[.onion] Rent-a-botnet – 20k nodes available (Geo-targeted)',
+          '[.onion] Ethereum wallet brute-forcing tool – 30% success rate',
+          '[.onion] OnionMail dump – 200k private mailboxes',
+          '[.onion] Facial recognition bypass tool (Active Directory)',
+          '[.onion] Deep fake identity builder – facial + audio clone',
+          '[.onion] Credit card skimmers w/ NFC – $90 per unit',
+          '[.onion] Police database access – limited slots left!',
+          '[.onion] Fake COVID-19 vaccination certificates – $30 each',
+          '[.onion] 3D printed firearm blueprints (auto fire mod included)',
+          '[.onion] TOR-to-Clearnet proxy – traceable bypass tool',
+          '[.onion] Secret agent ID generator – MI6 / FSB / NSA styles',
+          '[.onion] Interpol Watchlist clone site – spoofed entries',
+          '[.onion] Black Hat forums: Hacked cam live feeds (NSFW)',
+          '[.onion] Leaked chat logs from FBI Discord honeypot',
+          '[.onion] "Hydra Market" v3 mirror – fresh invite codes',
+          '[.onion] Unlisted domain marketplace – buy & sell .gov sites',
+          '[.onion] SIM swapper tool – v2.5.1 patched for AT&T/T-Mobile',
+          '[.onion] Underground eBay for stolen luxury watches',
+          '[.onion] Nuclear plant schematics archive (Ukraine 2023)',
+          '[.onion] Custom ransomware builder – Drag & Drop edition',
+          '[.onion] Firmware exploit for Tesla Autopilot override',
+          '[.onion] Keylogger logs archive – 2TB compressed (2024)',
+          '[.onion] Covert USB drop payloads – Office / Windows ready',
+          '[.onion] Blackmail contract template generator – markdown ready',
+          '[.onion] Crypto drain script v5.6 – stealth-mode enabled',
+          '[.onion] iCloud unlock remote API – Access token required',
+          '[.onion] ChatGPT jailbreak prompts collection (dangerous!)',
+          '[.onion] Leaked drone feed viewer – military grade only',
+          '[.onion] "Project Aurora" exposed – AI-led surveillance blueprint',
+          '[.onion] National firewall bypass VPN list – North Korea edition',
+          '[.onion] Ultra stealth burner phone service – ships worldwide',
+          '[.onion] SQLi scanner API – returns credentials in JSON'
+        ];
+
+        const selectedLogs = darknetLogs
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 5); // show 5 random entries
+
+        typeOutputLine('> Connecting to darknet nodes via Tor...', () => {
+          setTimeout(() => {
+            typeOutputLine('> Tunnel established. Accessing .onion services...');
+            selectedLogs.forEach((log, i) => {
+              setTimeout(() => {
+                const logLine = document.createElement('div');
+                logLine.className = 'terminal-line response-warning';
+                logLine.textContent = `> 🕸 ${log}`;
+                terminal.appendChild(logLine);
+              }, 600 * (i + 1));
+            });
+            setTimeout(() => {
+              typeOutputLine('> Darknet scan complete. Results stored in temp memory.');
+            }, 600 * (selectedLogs.length + 1));
+          }, 1000);
+        });
+        return;
+      }
+
+      const responses = {
+        help: '> Available commands: help, projects, status, clear, resume, skip, sudo, matrix, nuke, redmode, darknet, hack',
+        projects: '> Eye of Providence, Price Tracker Tool, AI E-Commerce Platform, Group Chat App',
+        status: '> Agent Cube is online and monitoring threats.',
+        download: '> Resume Download: Click here',
+        sudo: '> Permission denied. You are not root.',
+        matrix: '> Activating Matrix mode... Permission denied please contact admin',
+        nuke: '> Launching in 3... 2... 1... IP Address not in our record, Access Denied, Agent.',
+      };
+
+      if (input === 'clear') {
+        terminal.innerHTML = '';
+      } else if (input === 'skip') {
+        typing = false;
+        terminal.innerHTML = preText + mainText + '<span class="cursor"></span>';
+        asciiEl.innerHTML = ascii;
+      } else if (input === 'resume') {
+        typeOutputLine('> Resume Download: ', () => {
+          const a = document.createElement('a');
+          a.href = 'Qhubaib Resume.pdf';
+          a.textContent = 'Click here';
+          a.style.color = 'var(--primary-color)';
+          a.download = '';
+          terminal.appendChild(a);
+        });
+      } else if (input === 'redmode') {
+        document.body.classList.add('red-mode');
+        typeOutputLine('> Red mode activated. 🔴');
+      } else {
+        const output = responses[input] || '> Unknown command. Type "help" for a list of commands.';
+        typeOutputLine(output);
+      }
+    }
+
+    commandInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const cmd = commandInput.value.trim();
+        commandInput.value = '';
+        if (!passwordMode) typeOutputLine('> ' + cmd, () => handleCommand(cmd));
+        else handleCommand(cmd); // Don't echo password
+      }
+    });
+
+    skipBtn.addEventListener('click', () => {
+      typing = false;
+      terminal.innerHTML = preText + mainText + '<span class="cursor"></span>';
+      asciiEl.innerHTML = ascii;
+    });
+
+    // Initial focus on command input
+    commandInput.focus();
+    
+    // Keep focus on command input when clicking terminal
+    document.querySelector('.terminal-container').addEventListener('click', () => {
+      commandInput.focus();
+    });
+
+    startTypingSequence();
+  </script>
 </body>
 </html>
