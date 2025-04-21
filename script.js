@@ -1,6 +1,6 @@
 const preText = `> Establishing secure connection...\n> Accessing classified intel...\n> Scanning digital vaults...\n> Fetching Agent Cube's data profile...\n\n`;
 
-    const mainText = `> Name: Qhubaib Shaikh\n> Last Known Location: Mumbai, India\n> Email: qhubaibshaikh56@gmail.com\n> LinkedIn: linkedin.com/in/qhubaib\n> GitHub: github.com/Qhubaib12\n
+    const mainText = `> Name: Qhubaib Shaikh\n> Last Known Location: Mumbai, India\n> Email: qhubaibshaikh56@gmail.com\n> LinkedIn: linkedin.com/in/qhubaib\n> GitHub: github.com/Qhubaib1\n
 > Title: Website Enforcement Specialist
 
 > Skills Tree:
@@ -647,7 +647,7 @@ _____       _           _     _     _
             terminal.scrollTop = terminal.scrollHeight;
           }
           
-          const progressInterval = setInterval(updateProgress, 60050);
+          const progressInterval = setInterval(updateProgress, 69050);
           
         }, 1500);
       }, 2000);
