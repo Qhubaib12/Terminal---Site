@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qhubaib Shaikh - Terminal Intro</title>
+ <select id="historyDropdown" style="display:none;"></select>
+
   <style>
     :root {
       --primary-color: #0f0;
@@ -68,133 +70,134 @@
       animation: pulse 2s infinite;
     }
     .matrix-text {
-  color: #00ff00;
-  font-family: 'Courier New', monospace;
-  animation: matrixEffect 0.5s linear infinite;
-}
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      animation: matrixEffect 0.5s linear infinite;
+    }
 
-.hack-progress {
-  height: 10px;
-  background-color: rgba(0, 255, 0, 0.2);
-  margin: 10px 0;
-  overflow: hidden;
-  position: relative;
-}
+    .hack-progress {
+      height: 10px;
+      background-color: rgba(0, 255, 0, 0.2);
+      margin: 10px 0;
+      overflow: hidden;
+      position: relative;
+    }
 
-.hack-progress-bar {
-  height: 100%;
-  background-color: var(--primary-color);
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: progressPulse 1.2s ease-in-out infinite;
-}
+    .hack-progress-bar {
+      height: 100%;
+      background-color: var(--primary-color);
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: progressPulse 1.2s ease-in-out infinite;
+    }
 
-.hack-step {
-  display: flex;
-  margin: 8px 0;
-  opacity: 0;
-  animation: fadeIn 0.5s forwards;
-}
+    .hack-step {
+      display: flex;
+      margin: 8px 0;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
 
-.hack-icon {
-  margin-right: 10px;
-  width: 20px;
-  text-align: center;
-}
+    .hack-icon {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
 
-.hack-action {
-  flex-grow: 1;
-}
+    .hack-action {
+      flex-grow: 1;
+    }
 
-.hack-status {
-  width: 80px;
-  text-align: right;
-}
+    .hack-status {
+      width: 80px;
+      text-align: right;
+    }
 
-.flicker-text {
-  animation: textFlicker 0.2s linear infinite;
-}
+    .flicker-text {
+      animation: textFlicker 0.2s linear infinite;
+    }
 
-.scan-result {
-  padding: 2px 6px;
-  border-radius: 2px;
-  margin: 2px 0;
-  font-family: monospace;
-  font-size: 0.9em;
-  opacity: 0.9;
-}
+    .scan-result {
+      padding: 2px 6px;
+      border-radius: 2px;
+      margin: 2px 0;
+      font-family: monospace;
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
 
-.vulnerability-high {
-  background-color: rgba(255, 0, 0, 0.2);
-  border-left: 3px solid #ff0000;
-}
+    .vulnerability-high {
+      background-color: rgba(255, 0, 0, 0.2);
+      border-left: 3px solid #ff0000;
+    }
 
-.vulnerability-medium {
-  background-color: rgba(255, 165, 0, 0.2);
-  border-left: 3px solid #ffa500;
-}
+    .vulnerability-medium {
+      background-color: rgba(255, 165, 0, 0.2);
+      border-left: 3px solid #ffa500;
+    }
 
-.vulnerability-low {
-  background-color: rgba(255, 255, 0, 0.2);
-  border-left: 3px solid #ffff00;
-}
+    .vulnerability-low {
+      background-color: rgba(255, 255, 0, 0.2);
+      border-left: 3px solid #ffff00;
+    }
 
-.password-meter {
-  display: flex;
-  margin: 10px 0;
-  height: 8px;
-  width: 100%;
-}
+    .password-meter {
+      display: flex;
+      margin: 10px 0;
+      height: 8px;
+      width: 100%;
+    }
 
-.password-section {
-  flex-grow: 1;
-  margin: 0 2px;
-  background-color: #333;
-}
+    .password-section {
+      flex-grow: 1;
+      margin: 0 2px;
+      background-color: #333;
+    }
 
-.password-section.active {
-  background-color: var(--primary-color);
-}
+    .password-section.active {
+      background-color: var(--primary-color);
+    }
 
-.spin-loader {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(0, 255, 0, 0.3);
-  border-radius: 50%;
-  border-top-color: var(--primary-color);
-  animation: spin 1s linear infinite;
-  vertical-align: middle;
-  margin-right: 8px;
-}
+    .spin-loader {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0, 255, 0, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-@keyframes matrixEffect {
-  0% { text-shadow: 0 0 2px var(--primary-color); }
-  50% { text-shadow: 0 0 5px var(--primary-color); }
-  100% { text-shadow: 0 0 2px var(--primary-color); }
-}
+    @keyframes matrixEffect {
+      0% { text-shadow: 0 0 2px var(--primary-color); }
+      50% { text-shadow: 0 0 5px var(--primary-color); }
+      100% { text-shadow: 0 0 2px var(--primary-color); }
+    }
 
-@keyframes progressPulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
+    @keyframes progressPulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-@keyframes textFlicker {
-  0% { opacity: 1; }
-  50% { opacity: 0.8; }
-  100% { opacity: 1; }
-}
+    @keyframes textFlicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.8; }
+      100% { opacity: 1; }
+    }
+    
     .terminal-container {
       flex-grow: 1;
       border: 1px solid var(--primary-color);
@@ -263,7 +266,7 @@
       line-height: 1.2;
     }
     
-    #skipBtn, .action-btn {
+    #skipBtn {
       background-color: var(--terminal-bg);
       color: var(--primary-color);
       border: 1px solid var(--primary-color);
@@ -273,9 +276,13 @@
       font-family: var(--font-main);
       font-size: 0.9rem;
       transition: all 0.3s ease;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 5;
     }
     
-    #skipBtn:hover, .action-btn:hover {
+    #skipBtn:hover {
       background-color: var(--primary-color);
       color: var(--background-color);
       box-shadow: var(--glow-effect);
@@ -369,24 +376,6 @@
       background-color: var(--primary-color);
     }
     
-    /* Command history dropdown */
-    .command-history {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 5;
-    }
-    
-    .history-dropdown {
-      background-color: var(--terminal-bg);
-      border: 1px solid var(--primary-color);
-      color: var(--primary-color);
-      padding: 0.3rem 0.5rem;
-      font-family: var(--font-main);
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-    
     /* Footer with social links */
     .footer {
       margin-top: 1rem;
@@ -427,7 +416,7 @@
         font-size: 0.7rem;
       }
       
-      #skipBtn, .action-btn {
+      #skipBtn {
         padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
       }
@@ -453,11 +442,6 @@
     
     <div class="terminal-container">
       <button id="skipBtn">Skip Intro</button>
-      <div class="command-history">
-        <select class="history-dropdown" id="historyDropdown">
-          <option value="">Command History</option>
-        </select>
-      </div>
       <div class="terminal" id="terminal"></div>
     </div>
     
@@ -478,8 +462,6 @@
   </div>
 
   <audio id="typeSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
-
-  <!-- Link to external JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
