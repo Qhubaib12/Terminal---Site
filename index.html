@@ -452,8 +452,11 @@
     </div>
     
     <div class="terminal-container">
+      <button id="skipBtn">Skip Intro</button>
       <div class="command-history">
-        <button id="skipBtn" class="history-dropdown">Skip Intro</button>
+        <select class="history-dropdown" id="historyDropdown">
+          <option value="">Command History</option>
+        </select>
       </div>
       <div class="terminal" id="terminal"></div>
     </div>
