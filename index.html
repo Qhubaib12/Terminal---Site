@@ -868,10 +868,8 @@
       // Add the rest of your terminal initialization code here
       // ...
       
-      // Example placeholder for demo purposes
-      typeText('terminal', 'Loading terminal session...\n', 30, () => {
-        typeText('terminal', document.getElementById('terminal').innerHTML + 'System initialized. Welcome to the portfolio terminal of Qhubaib Shaikh.\nType "help" to see available commands.\n\n>', 20);
-      });
+  document.getElementById('terminal').innerHTML = '> ';
+
     }
   </script>
   <script src="script.js"></script>
