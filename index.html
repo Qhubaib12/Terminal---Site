@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Keep all the existing head content unchanged -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qhubaib Shaikh - Terminal Intro</title>
   <select id="historyDropdown" style="display:none;"></select>
 
   <style>
+    /* Keep all the existing CSS unchanged */
     :root {
       --primary-color: #0f0;
       --secondary-color: #00aa00;
@@ -827,7 +829,12 @@
             loginContainer.style.opacity = '0';
             setTimeout(() => {
               loginContainer.style.display = 'none';
-              initTerminal(); // Initialize main terminal after login
+              // Call the function from script.js instead of the inline function
+              if (typeof initTerminalFromScriptJs === 'function') {
+                initTerminalFromScriptJs();
+              } else {
+                console.error('Function initTerminalFromScriptJs not found in script.js');
+              }
             }, 1000);
           }, 1000);
         } else {
@@ -845,7 +852,12 @@
         loginContainer.style.opacity = '0';
         setTimeout(() => {
           loginContainer.style.display = 'none';
-          initTerminal(); // Initialize main terminal after login
+          // Call the function from script.js instead of the inline function
+          if (typeof initTerminalFromScriptJs === 'function') {
+            initTerminalFromScriptJs();
+          } else {
+            console.error('Function initTerminalFromScriptJs not found in script.js');
+          }
         }, 1000);
       });
       
@@ -861,18 +873,7 @@
       document.head.appendChild(style);
     });
 
-    // Function to initialize the terminal after login
-    function initTerminal() {
-      // This would contain your original initialization code
-      console.log("Terminal initialized");
-      // Add the rest of your terminal initialization code here
-      // ...
-      
-      // Example placeholder for demo purposes
-      typeText('terminal', 'Loading terminal session...\n', 30, () => {
-        typeText('terminal', document.getElementById('terminal').innerHTML + 'System initialized. Welcome to the portfolio terminal of Qhubaib Shaikh.\nType "help" to see available commands.\n\n>', 20);
-      });
-    }
+    // Function removed - initTerminal will now be called from script.js
   </script>
   <script src="script.js"></script>
 </body>
