@@ -3,7 +3,7 @@
 <head>
   <!-- Keep all the existing head content unchanged -->
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Qhubaib Shaikh - Terminal Intro</title>
   <select id="historyDropdown" style="display:none;"></select>
 
@@ -54,17 +54,19 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      touch-action: manipulation;
     }
     
-    .container {
-      max-width: 1000px;
-      width: 90%;
-      margin: 2rem auto;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    
+.container {
+  max-width: 1000px;
+  width: 90%;
+  margin: 2rem auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 80vh;
+}
     .header {
       display: flex;
       justify-content: space-between;
@@ -318,15 +320,18 @@
       font-weight: bold;
     }
     
-    #commandInput {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--primary-color);
-      font-family: inherit;
-      font-size: 1rem;
-      outline: none;
-    }
+#commandInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
     
     .cursor {
       display: inline-block;
@@ -583,6 +588,119 @@
         width: 90%;
         padding: 1.5rem;
       }
+      /* Enhanced Mobile Styles */
+@media screen and (max-width: 600px) {
+  /* Header adjustments */
+  .header {
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 6px;
+  }
+  
+  .header-title {
+    font-size: 12px;
+    width: 100%;
+    order: 1;
+    text-align: center;
+    margin: 3px 0;
+  }
+  
+  .window-controls {
+    order: 0;
+    margin-right: 0;
+  }
+  
+  .header-status {
+    order: 2;
+    font-size: 10px;
+    margin-right: auto;
+  }
+  
+  .theme-switcher {
+    order: 3;
+    margin-left: 0;
+  }
+  
+  #themeDropdown {
+    font-size: 10px;
+    padding: 2px;
+  }
+  
+  /* Terminal container */
+  .terminal-container {
+    padding: 8px;
+    margin-top: 8px;
+  }
+  
+  /* Terminal text */
+  .terminal {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  
+  /* Skip button */
+  #skipBtn {
+    font-size: 10px;
+    padding: 4px 8px;
+    top: 5px;
+    right: 5px;
+  }
+  
+  /* Input box */
+  .input-container {
+    padding: 6px;
+    margin-top: 8px;
+  }
+  
+  #commandInput {
+    font-size: 12px;
+  }
+  
+  .prompt {
+    font-size: 12px;
+  }
+  
+  /* Footer */
+  .footer {
+    margin-top: 8px;
+    font-size: 10px;
+  }
+  
+  .social-links {
+    gap: 15px;
+  }
+  
+  /* Login box */
+  .login-box {
+    width: 90%;
+    max-width: none;
+    padding: 15px;
+  }
+  
+  .login-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  
+  .login-input, .login-btn {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  /* Fix container spacing */
+  .container {
+    width: 95%;
+    margin: 10px auto;
+    gap: 8px;
+  }
+  
+  /* Fix ASCII art overflow */
+  .ascii-art {
+    font-size: 8px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+}
     }
   </style>
 </head>
@@ -875,5 +993,39 @@
     // Function removed - initTerminal will now be called from script.js
   </script>
   <script src="script.js"></script>
+  <script>
+  // Mobile optimizations
+  document.addEventListener('DOMContentLoaded', function() {
+    // Detect if mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Adjust font size for mobile
+      document.body.style.fontSize = '14px';
+      
+      // Fix command input focus
+      const commandInput = document.getElementById('commandInput');
+      if (commandInput) {
+        commandInput.addEventListener('focus', function() {
+          // Scroll to input when focused
+          setTimeout(() => {
+            window.scrollTo(0, document.body.scrollHeight);
+          }, 300);
+        });
+      }
+      
+      // Add active states for touch elements
+      const touchElements = document.querySelectorAll('button, .window-btn, .login-btn, .social-link');
+      touchElements.forEach(el => {
+        el.addEventListener('touchstart', function() {
+          this.style.opacity = '0.7';
+        });
+        el.addEventListener('touchend', function() {
+          this.style.opacity = '1';
+        });
+      });
+    }
+  });
+</script>
 </body>
 </html>
